@@ -30,10 +30,10 @@ $app->get('/api/clientes', function(Request $request, Response $response){
 // GET Recueperar cliente por ID 
 $app->get('/api/clientes/{id}', function(Request $request, Response $response){
   $id_cliente = $request->getAttribute('id');
-  $sql = "SELECT * FROM clientes WHERE id = $id_cliente";
+  $sql = "SELECT * FROM clientes WHERE id_cliente = $id_cliente";
   try{
-    $db = new db();
-    $db = $db->conectDB();
+    $db = new BDConnect;
+    $db = $db->connect();
     $resultado = $db->query($sql);
 
     if ($resultado->rowCount() > 0){
@@ -51,27 +51,25 @@ $app->get('/api/clientes/{id}', function(Request $request, Response $response){
 
 
 // POST Crear nuevo cliente 
-$app->post('/api/clientes/nuevo', function(Request $request, Response $response){
-   $nombre = $request->getParam('nombre');
-   $apellidos = $request->getParam('apellidos');
-   $telefono = $request->getParam('telefono');
-   $email = $request->getParam('email');
-   $direccion = $request->getParam('direccion');
-   $ciudad = $request->getParam('ciudad'); 
+$app->post('/api/clientes/', function(Request $request, Response $response){
+
+  $id_cliente = $request->getParam('id_cliente');
+  $nombre_cliente = $request->getParam('nombre_cliente');
+  $apellido_cliente = $request->getParam('apellido_cliente');
+  $edad_cliente = $request->getParam('edad_cliente');
   
-  $sql = "INSERT INTO clientes (nombre, apellidos, telefono, email, direccion, ciudad) VALUES 
-          (:nombre, :apellidos, :telefono, :email, :direccion, :ciudad)";
+  $sql = "INSERT INTO clientes (id_cliente, nombre_cliente, apellido_cliente, edad_cliente) VALUES 
+          (:id_cliente,:nombre_cliente, :apellido_cliente, :edad_cliente)";
   try{
-    $db = new db();
-    $db = $db->conectDB();
+    $db = new BDConnect;
+    $db = $db->connect();
     $resultado = $db->prepare($sql);
 
-    $resultado->bindParam(':nombre', $nombre);
-    $resultado->bindParam(':apellidos', $apellidos);
-    $resultado->bindParam(':telefono', $telefono);
-    $resultado->bindParam(':email', $email);
-    $resultado->bindParam(':direccion', $direccion);
-    $resultado->bindParam(':ciudad', $ciudad);
+    $resultado->bindParam(':id_cliente', $id_cliente);
+    $resultado->bindParam(':nombre_cliente', $nombre_cliente);
+    $resultado->bindParam(':apellido_cliente', $apellido_cliente);
+    $resultado->bindParam(':edad_cliente', $edad_cliente);
+    
 
     $resultado->execute();
     echo json_encode("Nuevo cliente guardado.");  
@@ -84,43 +82,35 @@ $app->post('/api/clientes/nuevo', function(Request $request, Response $response)
 }); 
 
 
-
 // PUT Modificar cliente 
-$app->put('/api/clientes/modificar/{id}', function(Request $request, Response $response){
-   $id_cliente = $request->getAttribute('id');
-   $nombre = $request->getParam('nombre');
-   $apellidos = $request->getParam('apellidos');
-   $telefono = $request->getParam('telefono');
-   $email = $request->getParam('email');
-   $direccion = $request->getParam('direccion');
-   $ciudad = $request->getParam('ciudad'); 
+$app->put('/api/clientes/{id}', function(Request $request, Response $response){
+
+  $id_cliente = $request->getAttribute('id');
+  $nombre_cliente = $request->getParam('nombre_cliente');
+  $apellido_cliente = $request->getParam('apellido_cliente');
+  $edad_cliente = $request->getParam('edad_cliente');
   
   $sql = "UPDATE clientes SET
-          nombre = :nombre,
-          apellidos = :apellidos,
-          telefono = :telefono,
-          email = :email,
-          direccion = :direccion,
-          ciudad = :ciudad
-        WHERE id = $id_cliente";
-     
+          nombre_cliente = :nombre_cliente,
+          apellido_cliente = :apellido_cliente,
+          edad_cliente = :edad_cliente
+          WHERE id_cliente = $id_cliente";
+
   try{
-    $db = new db();
-    $db = $db->conectDB();
-    $resultado = $db->prepare($sql);
+      $db = new BDConnect;
+      $db = $db->connect();
+      $resultado = $db->prepare($sql);
 
-    $resultado->bindParam(':nombre', $nombre);
-    $resultado->bindParam(':apellidos', $apellidos);
-    $resultado->bindParam(':telefono', $telefono);
-    $resultado->bindParam(':email', $email);
-    $resultado->bindParam(':direccion', $direccion);
-    $resultado->bindParam(':ciudad', $ciudad);
+      $resultado->bindParam(':nombre_cliente', $nombre_cliente);
+      $resultado->bindParam(':apellido_cliente', $apellido_cliente);
+      $resultado->bindParam(':edad_cliente', $edad_cliente);
+    
 
-    $resultado->execute();
-    echo json_encode("Cliente modificado.");  
+      $resultado->execute();
+      echo json_encode("Cliente modificado.");  
 
-    $resultado = null;
-    $db = null;
+      $resultado = null;
+      $db = null;
   }catch(PDOException $e){
     echo '{"error" : {"text":'.$e->getMessage().'}';
   }
@@ -128,14 +118,19 @@ $app->put('/api/clientes/modificar/{id}', function(Request $request, Response $r
 
 
 // DELETE borar cliente 
-$app->delete('/api/clientes/delete/{id}', function(Request $request, Response $response){
+$app->delete('/api/clientes/{id}', function(Request $request, Response $response){
    $id_cliente = $request->getAttribute('id');
-   $sql = "DELETE FROM clientes WHERE id = $id_cliente";
+   $vigente = 1;
+   $sql = "UPDATE clientes SET
+          vigente = :vigente
+          WHERE id_cliente = $id_cliente";
      
   try{
-    $db = new db();
-    $db = $db->conectDB();
+    $db = new BDConnect;
+    $db = $db->connect();
     $resultado = $db->prepare($sql);
+      $resultado->bindParam(':vigente', $vigente);
+
      $resultado->execute();
 
     if ($resultado->rowCount() > 0) {

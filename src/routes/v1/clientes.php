@@ -95,20 +95,20 @@ $app->put('/api/clientes/{id}', function(Request $request, Response $response){
                 WHERE id_cliente = $id_cliente";
 
   try{
-      $db = new BDConnect;
-      $db = $db->connect();
-      $resultado = $db->prepare($sql);
+        $db = new BDConnect;
+        $db = $db->connect();
+        $resultado = $db->prepare($sql);
 
-      $resultado->bindParam(':nombre_cliente', $nombre_cliente);
-      $resultado->bindParam(':apellido_cliente', $apellido_cliente);
-      $resultado->bindParam(':edad_cliente', $edad_cliente);
-    
+        $resultado->bindParam(':nombre_cliente', $nombre_cliente);
+        $resultado->bindParam(':apellido_cliente', $apellido_cliente);
+        $resultado->bindParam(':edad_cliente', $edad_cliente);
+      
 
-      $resultado->execute();
-      echo json_encode("Cliente modificado.");  
+        $resultado->execute();
+        echo json_encode("Cliente modificado.");  
 
-      $resultado = null;
-      $db = null;
+        $resultado = null;
+        $db = null;
   }catch(PDOException $e){
     echo '{"error" : {"text":'.$e->getMessage().'}';
   }

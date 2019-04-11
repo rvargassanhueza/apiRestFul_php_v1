@@ -7,7 +7,7 @@
  * @Version:    $Rev:$ 1.0
  * @Developer:  Rodrigo Vargas S(rodrigovargassanhueza@gmail.com) cc(federicoguzman@gmail.com)
  **/
-class DbConnect {
+class BDConnect {
  
     private $conn;
  
@@ -18,7 +18,7 @@ class DbConnect {
      * @return database connection handler
      */
     function connect() {
-        include_once dirname(__FILE__) . './Config.php';
+        include_once dirname(__FILE__) . './config.php';
 
         try {
             $this->conn = new PDO('mysql:host=' .

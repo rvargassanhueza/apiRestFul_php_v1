@@ -8,7 +8,7 @@ require_once('src/config/db/connect.php');
 
 // GET Todos los clientes 
 $app->get('/api/clientes', function(Request $request, Response $response){
-  $sql = "SELECT * FROM clientes";
+$sql = "SELECT * FROM clientes WHERE vigente = 0";
   try{
     $db = new BDConnect;
     $db = $db->connect();
@@ -30,7 +30,7 @@ $app->get('/api/clientes', function(Request $request, Response $response){
 // GET Recueperar cliente por ID 
 $app->get('/api/clientes/{id}', function(Request $request, Response $response){
   $id_cliente = $request->getAttribute('id');
-  $sql = "SELECT * FROM clientes WHERE id_cliente = $id_cliente";
+  $sql = "SELECT * FROM clientes WHERE id_cliente = $id_cliente AND vigente = 0";
   try{
     $db = new BDConnect;
     $db = $db->connect();
@@ -53,29 +53,27 @@ $app->get('/api/clientes/{id}', function(Request $request, Response $response){
 // POST Crear nuevo cliente 
 $app->post('/api/clientes/', function(Request $request, Response $response){
 
-  $id_cliente = $request->getParam('id_cliente');
-  $nombre_cliente = $request->getParam('nombre_cliente');
-  $apellido_cliente = $request->getParam('apellido_cliente');
-  $edad_cliente = $request->getParam('edad_cliente');
-  
-  $sql = "INSERT INTO clientes (id_cliente, nombre_cliente, apellido_cliente, edad_cliente) VALUES 
-          (:id_cliente,:nombre_cliente, :apellido_cliente, :edad_cliente)";
+        $nombre_cliente = $request->getParam('nombre_cliente');
+        $apellido_cliente = $request->getParam('apellido_cliente');
+        $edad_cliente = $request->getParam('edad_cliente');
+        
+        $sql = "INSERT INTO clientes (nombre_cliente, apellido_cliente, edad_cliente) VALUES 
+                (:nombre_cliente, :apellido_cliente, :edad_cliente)";
   try{
-    $db = new BDConnect;
-    $db = $db->connect();
-    $resultado = $db->prepare($sql);
+        $db = new BDConnect;
+        $db = $db->connect();
+        $resultado = $db->prepare($sql);
 
-    $resultado->bindParam(':id_cliente', $id_cliente);
-    $resultado->bindParam(':nombre_cliente', $nombre_cliente);
-    $resultado->bindParam(':apellido_cliente', $apellido_cliente);
-    $resultado->bindParam(':edad_cliente', $edad_cliente);
-    
+        $resultado->bindParam(':nombre_cliente', $nombre_cliente);
+        $resultado->bindParam(':apellido_cliente', $apellido_cliente);
+        $resultado->bindParam(':edad_cliente', $edad_cliente);
+        
 
-    $resultado->execute();
-    echo json_encode("Nuevo cliente guardado.");  
+        $resultado->execute();
+        echo json_encode("Nuevo cliente guardado.");  
 
-    $resultado = null;
-    $db = null;
+        $resultado = null;
+        $db = null;
   }catch(PDOException $e){
     echo '{"error" : {"text":'.$e->getMessage().'}';
   }
@@ -85,16 +83,16 @@ $app->post('/api/clientes/', function(Request $request, Response $response){
 // PUT Modificar cliente 
 $app->put('/api/clientes/{id}', function(Request $request, Response $response){
 
-  $id_cliente = $request->getAttribute('id');
-  $nombre_cliente = $request->getParam('nombre_cliente');
-  $apellido_cliente = $request->getParam('apellido_cliente');
-  $edad_cliente = $request->getParam('edad_cliente');
-  
-  $sql = "UPDATE clientes SET
-          nombre_cliente = :nombre_cliente,
-          apellido_cliente = :apellido_cliente,
-          edad_cliente = :edad_cliente
-          WHERE id_cliente = $id_cliente";
+        $id_cliente = $request->getAttribute('id');
+        $nombre_cliente = $request->getParam('nombre_cliente');
+        $apellido_cliente = $request->getParam('apellido_cliente');
+        $edad_cliente = $request->getParam('edad_cliente');
+        
+        $sql = "UPDATE clientes SET
+                nombre_cliente = :nombre_cliente,
+                apellido_cliente = :apellido_cliente,
+                edad_cliente = :edad_cliente
+                WHERE id_cliente = $id_cliente";
 
   try{
       $db = new BDConnect;

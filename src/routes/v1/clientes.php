@@ -147,6 +147,7 @@ $app->delete('/api/clientes/delete/{id}', function(Request $request, Response $r
   }catch(PDOException $e){
     echo '{"error" : {"text":'.$e->getMessage().'}';
   }
+  
 }); 
 
 

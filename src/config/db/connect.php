@@ -8,15 +8,15 @@
  * @Developer:  Rodrigo Vargas S(rodrigovargassanhueza@gmail.com) cc(federicoguzman@gmail.com)
  **/
 class BDConnect {
- 
     private $conn;
- 
     function __construct() {        
     } 
     /**
      * Establishing database connection
      * @return database connection handler
      */
+
+     
     function connect() {
         include_once dirname(__FILE__) . './config.php';
 

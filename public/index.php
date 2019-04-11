@@ -12,7 +12,7 @@
         require 'src/config/db/connect.php';
         $app = new \Slim\App;
         // Ruta clientes
-        require 'src/routes/v1/clientes.php';
+        require_once ('src/routes/v1/clientes.php');
 
         $app->get('/api/status', function (Request $request, Response $response, array $args) {
             echo "Api activa";

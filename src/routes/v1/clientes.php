@@ -3,14 +3,14 @@ use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 
 $app = new \Slim\App;
-require 'src/config/db/connect.php';
+require_once('src/config/db/connect.php');
 
 
 // GET Todos los clientes 
 $app->get('/api/clientes', function(Request $request, Response $response){
   $sql = "SELECT * FROM clientes";
   try{
-    $db = new DbConnect;
+    $db = new BDConnect;
     $db = $db->connect();
     $resultado = $db->query($sql);
 

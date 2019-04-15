@@ -1,24 +1,23 @@
 <?php
-
     use Symfony\Component\Validator\Validation;
-    use Symfony\Component\Validator\Constraints\Length;
-    use Symfony\Component\Validator\Constraints\NotBlank;
-
+    use Symfony\Component\Validator\Constraints as Assert;
     $validator = Validation::createValidator();
+    $dataIn = '';
 
-    class Validate{
-        function 
-        $violations = $validator->validate('Bernhard', [
-            new Length(['min' => 10]),
-            new NotBlank(),
-        ]);
-    
-        if (0 !== count($violations)) {
-            // there are errors, now you can show them
-            foreach ($violations as $violation) {
-                echo $violation->getMessage().'<br>';
-            }
+    $groups = new Assert\GroupSequence(['Default', 'custom']);
+    class ValidateCliente{
+
+        function validaCliente($input){
+            $dataIn= $input;
+            'nombre_cliente' => new Assert\Length(['min' => 102]),
+            'apellido_cliente' => new Assert\Length(['max' => 50]),
+            'edad_cliente' => new Assert\Type(['type' => 'int']),  
+                        
         }
+        new CustomUniqueTagValidator(['groups' => 'custom']),
+}
+$violations = $validator->validate($dataIn, $groups);
 
-    }
+
+   
     

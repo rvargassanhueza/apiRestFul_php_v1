@@ -4,6 +4,8 @@ use \Psr\Http\Message\ResponseInterface as Response;
 
 $app = new \Slim\App;
 require_once('src/config/db/connect.php');
+require_once('src/helpers/validators/cliente/validate.php');
+
 
 
 // GET Todos los clientes 
@@ -52,6 +54,10 @@ $app->get('/api/clientes/{id}', function(Request $request, Response $response){
 
 // POST Crear nuevo cliente 
 $app->post('/api/clientes/', function(Request $request, Response $response){
+
+        $valid = new ValidateCliente;
+        $valid = $valid->validaCliente("ljkadj");
+        print_r($valid);
 
         $nombre_cliente = $request->getParam('nombre_cliente');
         $apellido_cliente = $request->getParam('apellido_cliente');

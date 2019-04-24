@@ -3,15 +3,16 @@
 /* ======================== */
 
 /*id_persona, id_direccion, rut, nombre_completo, correo, telefono, fecha_creacion, fecha_modificacion, usuario_creacion, usuario_modificacion, vigente */
--- INSERT INTO T_PERSONAS (id_persona, id_direccion, rut_persona, nombre_completo_persona, correo_persona, telefono_persona, fecha_creacion, fecha_modificacion, usuario_creacion, usuario_modificacion, vigente) VALUES
--- (1, 1, '19.232.217-0', 'Eduardo Valenzuela', 'contacto@evalenzuela.com','+56964818866', CURRENT_TIMESTAMP(),null, null, null, 1),
--- (2, 2, '10.232.217-k', 'Rodrigo Vargas', 'contacto@rvargas.com','+56911111111', CURRENT_TIMESTAMP(), null ,null ,null , 1),
--- (3, 3, '11.290.338-5', 'Francisco Vargas', 'contacto@fvargas.com','+56940901843', CURRENT_TIMESTAMP(), null ,null ,null , 1);
 
--- INSERT INTO T_DIRECCION (id_direccion, id_comuna, calle_direccion, numero_direccion, observacion_direccion, cod_postal, fecha_creacion, fecha_modificacion, usuario_creacion, usuario_modificacion, vigente) VALUES
--- (1, 317, 'Apalaches', '14531', 'Depto', '303', CURRENT_TIMESTAMP(), null ,null ,null , 1),
--- (2, 279, 'Maipú', '525', 'Cooperativa', '408', CURRENT_TIMESTAMP(), null ,null ,null , 1),
--- (3, 279, 'Maipú', '525', 'Cooperativa', '007', CURRENT_TIMESTAMP(), null ,null ,null , 1);
+INSERT INTO T_PERSONAS (id_direccion, rut_persona, nombre_completo_persona, correo_persona, telefono_persona, fecha_creacion, fecha_modificacion, usuario_creacion, usuario_modificacion, vigente) VALUES
+(1, '19.232.217-0', 'Eduardo Valenzuela', 'contacto@evalenzuela.com','+56964818866', CURRENT_TIMESTAMP(),null, null, null, 1),
+(2, '10.232.217-k', 'Rodrigo Vargas', 'contacto@rvargas.com','+56911111111', CURRENT_TIMESTAMP(), null ,null ,null , 1),
+(3, '11.290.338-5', 'Francisco Vargas', 'contacto@fvargas.com','+56940901843', CURRENT_TIMESTAMP(), null ,null ,null , 1);
+
+INSERT INTO T_DIRECCION (id_comuna, calle_direccion, numero_direccion, observacion_direccion, cod_postal, fecha_creacion, fecha_modificacion, usuario_creacion, usuario_modificacion, vigente) VALUES
+(317, 'Apalaches', '14531', 'Depto', '303', CURRENT_TIMESTAMP(), null ,null ,null , 1),
+(279, 'Maipú', '525', 'Cooperativa', '408', CURRENT_TIMESTAMP(), null ,null ,null , 1),
+(279, 'Maipú', '525', 'Cooperativa', '007', CURRENT_TIMESTAMP(), null ,null ,null , 1);
 
 INSERT INTO T_REGION (id_region, nombre_region, fecha_creacion, fecha_modificacion, usuario_creacion, usuario_modificacion, vigente) VALUES
 (1, 'Tarapacá', CURRENT_TIMESTAMP(), null ,null ,null , 1),

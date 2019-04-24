@@ -74,9 +74,10 @@ CREATE TABLE T_TIPO_USUARIO(
 /* === DATOS DE CLIENTES === */
 /* ========================= */
 CREATE TABLE T_CLIENTES(
-	id_cliente					int not null,
-	nombre_cliente 				varchar(100) null,
-	descripcion_cliente			varchar(200) null,
+	id_cliente				int not null,
+	nombre_cliente 			varchar(100) null,
+	descripcion_cliente		varchar(200) null,
+	id_usuario				int not null,
 	fecha_creacion 			date null,
   	fecha_modificacion 		date null,
   	usuario_creacion 		int null,
@@ -88,7 +89,6 @@ CREATE TABLE T_CLIENTES(
 
 CREATE TABLE T_USUARIOS(
 	id_usuario				int not null,
-	id_cliente				int not null,
 	id_tipo_usuario			int not null,
 	nombre_usuario 			varchar(100) null,
 	pass_usuario			varchar(200) null,
@@ -171,7 +171,6 @@ CREATE TABLE T_TIPO_FORMULARIOS(
 );
 
 
-
 ALTER TABLE T_PROVINCIA   ADD  CONSTRAINT FK_T_PROVINCIA_REGION FOREIGN KEY(id_region)
 REFERENCES T_REGION (id_region);
 
@@ -190,8 +189,8 @@ REFERENCES T_PERSONAS (id_persona);
 
 
 
-ALTER TABLE T_USUARIOS    ADD  CONSTRAINT FK_T_USUARIOS_CLIENTE FOREIGN KEY(id_cliente)
-REFERENCES T_CLIENTES (id_cliente);
+ALTER TABLE T_CLIENTES    ADD  CONSTRAINT FK_CLIENTE_T_USUARIO FOREIGN KEY(id_usuario)
+REFERENCES T_USUARIOS (id_usuario);
 
 
 ALTER TABLE T_USUARIOS    ADD  CONSTRAINT FK_T_USUARIOS_TIPO_USUARIO FOREIGN KEY(id_tipo_usuario)
@@ -205,6 +204,9 @@ REFERENCES T_DIRECCION (id_direccion);
 
 ALTER TABLE T_PERSONAS    ADD  CONSTRAINT FK_T_PERSONAS_USUARIO FOREIGN KEY(id_usuario)
 REFERENCES T_USUARIOS (id_usuario);
+
+ALTER TABLE T_FORMULARIOS  ADD  CONSTRAINT FK_T_FORMULARIOS_T_TIPO_FORMULARIOS FOREIGN KEY(id_tipo_formulario)
+REFERENCES T_TIPO_FORMULARIOS (id_tipo_formulario);
 
 
 ALTER TABLE T_FORMULARIO_T_PERSONAS    ADD  CONSTRAINT FK_T_FORMULARIO_T_PERSONAS FOREIGN KEY(id_persona)

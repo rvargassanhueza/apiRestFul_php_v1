@@ -30,10 +30,10 @@ $app->get('/api/clientes', function(Request $request, Response $response){
 // GET Recueperar cliente por ID 
 $app->get('/api/clientes/{id}', function(Request $request, Response $response){
   $id_cliente = $request->getAttribute('id');
-  $sql = "SELECT * FROM clientes WHERE id = $id_cliente";
+  $sql = "SELECT * FROM clientes WHERE id_cliente = $id_cliente";
   try{
-    $db = new db();
-    $db = $db->conectDB();
+    $db = new BDConnect;
+    $db = $db->connect();
     $resultado = $db->query($sql);
 
     if ($resultado->rowCount() > 0){

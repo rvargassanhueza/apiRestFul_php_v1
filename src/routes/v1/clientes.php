@@ -30,11 +30,7 @@ $sql = "SELECT * FROM clientes WHERE vigente = 0";
 // GET Recueperar cliente por ID 
 $app->get('/api/clientes/{id}', function(Request $request, Response $response){
   $id_cliente = $request->getAttribute('id');
-<<<<<<< HEAD
-  $sql = "SELECT * FROM clientes WHERE id_cliente = $id_cliente";
-=======
   $sql = "SELECT * FROM clientes WHERE id_cliente = $id_cliente AND vigente = 0";
->>>>>>> f35c885d30e139d02482b9c9ff426bbc4c69cdd9
   try{
     $db = new BDConnect;
     $db = $db->connect();

@@ -2,18 +2,6 @@
 /* === INSERTANDO DATOS === */
 /* ======================== */
 
-/*id_persona, id_direccion, rut, nombre_completo, correo, telefono, fecha_creacion, fecha_modificacion, usuario_creacion, usuario_modificacion, vigente */
-
-INSERT INTO T_PERSONAS (id_direccion, rut_persona, nombre_completo_persona, correo_persona, telefono_persona, fecha_creacion, fecha_modificacion, usuario_creacion, usuario_modificacion, vigente) VALUES
-(1, '19.232.217-0', 'Eduardo Valenzuela', 'contacto@evalenzuela.com','+56964818866', CURRENT_TIMESTAMP(),null, null, null, 0),
-(2, '10.232.217-k', 'Rodrigo Vargas', 'contacto@rvargas.com','+56911111111', CURRENT_TIMESTAMP(), null ,null ,null , 0),
-(3, '11.290.338-5', 'Francisco Vargas', 'contacto@fvargas.com','+56940901843', CURRENT_TIMESTAMP(), null ,null ,null , 0);
-
-INSERT INTO T_DIRECCION (id_comuna, calle_direccion, numero_direccion, observacion_direccion, cod_postal, fecha_creacion, fecha_modificacion, usuario_creacion, usuario_modificacion, vigente) VALUES
-(317, 'Apalaches', '14531', 'Depto', '303', CURRENT_TIMESTAMP(), null ,null ,null , 0),
-(279, 'Maipú', '525', 'Cooperativa', '408', CURRENT_TIMESTAMP(), null ,null ,null , 0),
-(279, 'Maipú', '525', 'Cooperativa', '007', CURRENT_TIMESTAMP(), null ,null ,null , 0);
-
 INSERT INTO T_REGION (id_region, nombre_region, fecha_creacion, fecha_modificacion, usuario_creacion, usuario_modificacion, vigente) VALUES
 (1, 'Tarapacá', CURRENT_TIMESTAMP(), null ,null ,null , 0),
 (2, 'Antofagasta', CURRENT_TIMESTAMP(), null ,null ,null , 0),
@@ -440,7 +428,84 @@ INSERT INTO T_COMUNA (id_comuna, nombre_comuna, id_provincia, fecha_creacion, fe
 
 
 
+-- CREAR TIPO DE FORMULARIO
+SET @nombre_tipo_formulario = 'Formulario Automotriz';
+SET @descripcion_tipo_formulario  = 'Formulario Automotriz';
 
+-- CREAR FORMULARIO (llenado de datos por visitantes del sitio)
+SET @id_tipo_formulario  = 1;
+SET @nombre_formulario  = 'Valenzuela delarze peugeot 301 hdi allure';
+SET @descripcion_formulario  = 'Valenzuela delarze peugeot 301 hdi allure';
+SET @nombre_sitio_web  = 'cooperativa.cl';
+SET @nuevo_valor_vehiculo  = 7500000;
+SET @antiguo_valor_vehiculo  = 6500000;
+SET @valor_bono_vehiculo  = 1000000;
+SET @valor_pie_vehiculo  = 1000000;
+SET @valor_cuota  = 350000;
+SET @valor_matricula  = null;
+SET @id_marca_vehiculo  = 1;
+SET @id_modelo_vehiculo  = 1;
+SET @id_concesionaria_vehiculo  = 1;
+SET @id_sucursal_vehiculo  = 1;
+SET @dataJson  = null;
 
+-- CREAR TIPO DE USUSARIO
 
+SET @nombre_tipo_usuario = 'Usuario web';
+SET @descripcion_tipo_usuario= 'Usuario web, es el usuario que llena los formularios desde los sitios cooperativa, m360 o aal';
 
+-- CREAR  USUSARIO
+
+SET @id_tipo_usuario = 1;
+SET @nombre_usuario = 'evalenzuela';
+SET @pass_usuario = '123456';
+SET @descripcion_usuario = 'Descripción Usuario Test';
+
+-- INSERTAR PERSONA
+
+SET @id_direccion = 1;
+-- la dirección debe ser autoincrement, por lo tanto al momento de insertar, previamente se debe
+-- hacer un select a la tabla dirección y traer el ultimo id registrado y a ese sumarle +1
+-- SELECT * FROM t_direccion order by `id_direccion` desc limit 1;
+SET @id_usuario  = 1;
+SET @rut_persona  = '192322170';
+SET @nombre_completo_persona='eduardo valenzuela 3';
+SET @correo_persona ='eduardo@entel_terra.cl';
+SET @telefono_persona = '56964818866';
+
+-- INSERTAR DIRECCIÓN (347 en el caso de que no vaya comuna, 347 = sin comuna)
+
+SET @id_comuna = 347;
+SET @calle_direccion = null;
+SET @numero_direccion = null;
+SET @observacion_direccion = null;
+SET @cod_postal = null;
+
+-- **************************************************************************
+
+INSERT INTO `t_tipo_usuario` (`nombre_tipo_usuario`, `descripcion_tipo_usuario`, `fecha_creacion`, `fecha_modificacion`, `usuario_creacion`, `usuario_modificacion`, `vigente`)
+SELECT @nombre_tipo_usuario, @descripcion_tipo_usuario, CURRENT_TIMESTAMP(), NULL, NULL, NULL, 0;
+
+INSERT INTO `t_usuarios` (`id_tipo_usuario`, `nombre_usuario`, `pass_usuario`, `descripcion_usuario`, `fecha_creacion`, `fecha_modificacion`, `usuario_creacion`, `usuario_modificacion`, `vigente`) 
+SELECT @id_tipo_usuario, @nombre_usuario, @pass_usuario, @descripcion_usuario, CURRENT_TIMESTAMP(), NULL, NULL, NULL, 0;
+
+INSERT INTO `t_tipo_formularios` (`nombre_tipo_formulario`, `descripcion_tipo_formulario`, `fecha_creacion`, `fecha_modificacion`, `usuario_creacion`, `usuario_modificacion`, `vigente`) 
+SELECT @nombre_tipo_formulario, @descripcion_tipo_formulario, CURRENT_TIMESTAMP(), NULL, NULL, NULL, 0;
+
+INSERT INTO `t_formularios` (`id_tipo_formulario`, `id_usuario`, `nombre_formulario`, `descripcion_formulario`, `nombre_sitio_web`, `nuevo_valor_vehiculo`, `antiguo_valor_vehiculo`, `valor_bono_vehiculo`, `valor_pie_vehiculo`, `valor_cuota`, `valor_matricula`, `id_marca_vehiculo`, `id_modelo_vehiculo`, `id_concesionaria_vehiculo`, `id_sucursal_vehiculo`, `dataJson`, `fecha_creacion`, `fecha_modificacion`, `usuario_creacion`, `usuario_modificacion`, `vigente`) 
+SELECT @id_tipo_formulario, @id_usuario, @nombre_formulario, @descripcion_formulario, @nombre_sitio_web, @nuevo_valor_vehiculo, @antiguo_valor_vehiculo, @valor_bono_vehiculo, @valor_pie_vehiculo, @valor_cuota, @valor_matricula, @id_marca_vehiculo, @id_modelo_vehiculo, @id_concesionaria_vehiculo, @id_sucursal_vehiculo, @dataJson, CURRENT_TIMESTAMP(), NULL, NULL, NULL, 0;  
+
+SET @id_formulario_scope = (SELECT LAST_INSERT_ID());
+
+INSERT INTO T_PERSONAS (id_direccion, id_usuario, rut_persona, nombre_completo_persona, correo_persona, telefono_persona, fecha_creacion, fecha_modificacion, usuario_creacion, usuario_modificacion, vigente)
+SELECT @id_direccion, @id_usuario, @rut_persona, @nombre_completo_persona, @correo_persona, @telefono_persona, CURRENT_TIMESTAMP(), null, null, null, 0;
+SET @id_direccion_scope = (SELECT LAST_INSERT_ID());
+
+-- SET @valorDireccion = (SELECT id_direccion FROM t_direccion order by `id_direccion` desc limit 1);
+-- SELECT @valorDireccion+1;
+
+INSERT INTO T_DIRECCION (id_direccion, id_comuna, calle_direccion, numero_direccion, observacion_direccion, cod_postal, fecha_creacion, fecha_modificacion, usuario_creacion, usuario_modificacion, vigente)
+SELECT @id_direccion_scope, @id_comuna, @calle_direccion, @numero_direccion, @observacion_direccion, @cod_postal, CURRENT_TIMESTAMP(), null, null, null, 0;
+
+INSERT INTO `t_formulario_t_personas` (`id_persona`, `id_formulario`)
+SELECT @id_direccion_scope, @id_formulario_scope;
